@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace UPF {
+namespace dg {
 
 template <typename T>
 class digraph {
@@ -72,9 +72,9 @@ public:
         graph.erase(val);
     }
 
-    void show()
+    void show(std::string &choice)
     {
-        std::ofstream dot("/tmp/g123456.dot");
+        std::ofstream dot("g123456.dot");
         dot << "digraph{\n";
         for (const auto& [key, node] : graph) {
             dot << "\t\"" << key << "\" -> {";
@@ -85,7 +85,14 @@ public:
         }
         dot << "}\n";
         dot.close();
-        system("dot -Tx11 /tmp/g123456.dot");
+        std::string final = "";
+        if(choice == "-Tpng") {
+            final = " -o out.png";
+        } else if (choice == "-Tpdf") {
+            final = " -o out.pdf";
+        }
+        std::string call = "dot " + choice + " g123456.dot" + final;
+        system(call.c_str());
     }
 
     void DFS_from(const T& from)

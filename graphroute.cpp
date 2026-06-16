@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include "digraph.cpp"
 
 using namespace std;
 
@@ -11,19 +12,22 @@ struct graph {
     vector<vector<string>> rows;
 };
 
-void sel_saida() {
+string sel_saida() {
     cout << "Selecione o formato de saida do GraphViz:\n";
     cout << "1. Tela\n2. PNG\n3. PDF\nOpcao: ";
     int c; cin >> c;
     switch (c) {
         case 1:
-            cout << "tela selecionado\n";
+            return "-Tx11";
             break;
         case 2:
-            cout << "png selecionado\n";
+            return "-Tpng";
             break;
         case 3:
-            cout << "pdf selecionado\n";
+            return "-Tpdf";
+            break;
+        default:
+            return "erro";
             break;
     }
 }
@@ -49,12 +53,28 @@ void csv(ifstream &inp, vector<string> &headers, vector<vector<string>> &rows) {
     } // resto
 }
 
-int main(int argc, char *argv[]) {
-    ifstream inp; graph A;
-    inp.open(argv[1]);
-    if(!inp) {cout << "Erro: Arquivo Invalido\n"; return -1;};
-    cout << "Arquivo valido. Continuando.\n";
-    csv(inp, A.headers, A.rows);
+void make_graph (ifstream &inp, vector<string> &headers, vector<vector<string>> &rows, dg::digraph<string> &root) {
+
+    for (const auto& row : rows) {
+        bool skip = false;
+        for (const auto& cell : row) {
+            if (cell == "*" || cell == "") {
+                skip = true;
+            }
+        }
+        if (skip) continue;
+
+        root.insert_node(row[4]);
+        root.insert_link(row[4], row[5]);
+
+    }
+
+}
+
+void fullprint(const graph &A) {
+    for (const auto& header : A.headers) {
+        cout << header << "\t";
+    } cout << endl;
 
     for (const auto& row : A.rows) {
         for (const auto& cell : row) {
@@ -62,6 +82,19 @@ int main(int argc, char *argv[]) {
         }
         cout << endl;
     } // so pra printar por agora
+}
+
+int main(int argc, char *argv[]) {
+    ifstream inp; graph A; dg::digraph<string> root;
+    inp.open(argv[1]);
+    if(!inp) {cout << "Erro: Arquivo Invalido\n"; return -1;};
+    cout << "Arquivo valido. Continuando.\n";
+    csv(inp, A.headers, A.rows);
+    make_graph(inp, A.headers, A.rows, root);
+    string choice = sel_saida();
+    root.show(choice);
+
+    //fullprint();
 
     inp.close();
 }
