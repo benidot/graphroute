@@ -42,6 +42,7 @@ private:
 public:
     void insert_node(const T& val)
     {
+        if(val == "*") return;
         if (graph.count(val) != 0)
             return;
         node aux;
@@ -55,7 +56,7 @@ public:
         if (!pfrom)
             return;
         auto pto = find(to);
-        if (!pto)
+        if (!pto || pto->value == "*")
             return;
 
         pfrom->links.insert(pto);

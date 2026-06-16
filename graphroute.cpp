@@ -56,15 +56,14 @@ void csv(ifstream &inp, vector<string> &headers, vector<vector<string>> &rows) {
 void make_graph (ifstream &inp, vector<string> &headers, vector<vector<string>> &rows, dg::digraph<string> &root) {
 
     for (const auto& row : rows) {
-        bool skip = false;
         for (const auto& cell : row) {
             if (cell == "*" || cell == "") {
-                skip = true;
+                continue;
             }
         }
-        if (skip) continue;
 
         root.insert_node(row[4]);
+        root.insert_node(row[5]);
         root.insert_link(row[4], row[5]);
 
     }
@@ -93,7 +92,6 @@ int main(int argc, char *argv[]) {
     make_graph(inp, A.headers, A.rows, root);
     string choice = sel_saida();
     root.show(choice);
-
     //fullprint();
 
     inp.close();
