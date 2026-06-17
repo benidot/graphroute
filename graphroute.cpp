@@ -84,6 +84,36 @@ void fullprint(const graph& A) {
   }  // so pra printar por agora
 }
 
+void print_dados(graph &A) {
+  int vertices_unicos = 0;
+  int arestas = 0;
+  cout << "Vertices unicos (IPs): " << vertices_unicos << " | Arestas: " << arestas << endl;
+}
+
+void sel_comando(dg::digraph<string> &root) {
+  cout << "======================================================\n";
+  cout << "1. Exibir grafo completo\n2. Encontrar menor caminho\n3. Calcular o diametro do grafo\n4. Identificar roteadores criticos\n0. Sair\n";
+  cout << "======================================================\n";
+  cout << "Escolha uma opcao: ";
+  int op = 0;
+  cin >> op;
+  if(op != 0 && op >= 5) {
+    return;
+  } 
+  string ch_s;
+  switch (op) {
+    case 1:
+      ch_s = sel_saida();
+      root.show(ch_s);
+    case 2:
+      return; // encontrar menor caminho
+    case 3:
+      return; // calcular diametro
+    case 4:
+      return; // identificar roteadores
+  }
+}
+
 int main(int argc, char* argv[]) {
   ifstream inp;
   graph A;
@@ -97,8 +127,9 @@ int main(int argc, char* argv[]) {
   cout << "Arquivo valido. Continuando.\n";
   csv(inp, A.headers, A.rows);
   make_graph(inp, A.headers, A.rows, root);
-  string choice = sel_saida();
-  root.show(choice);
+  print_dados(A);
+  sel_comando(root);
+  
   // fullprint();
 
   inp.close();
