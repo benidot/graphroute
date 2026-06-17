@@ -92,7 +92,11 @@ void print_dados(graph &A) {
 
 void sel_comando(dg::digraph<string> &root) {
   cout << "======================================================\n";
-  cout << "1. Exibir grafo completo\n2. Encontrar menor caminho\n3. Calcular o diametro do grafo\n4. Identificar roteadores criticos\n0. Sair\n";
+  cout << "1. Exibir grafo completo\n"
+       << "2. Encontrar menor caminho\n"
+       << "3. Calcular o diametro do grafo\n"
+       << "4. Identificar roteadores criticos\n"
+       << "0. Sair\n";
   cout << "======================================================\n";
   cout << "Escolha uma opcao: ";
   int op = 0;
