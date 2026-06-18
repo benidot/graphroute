@@ -91,6 +91,8 @@ void print_dados(graph& A) {
        << " | Arestas: " << arestas << endl;
 }
 
+void shortest_path(dg::digraph<string> &root, const string &filename);
+
 void sel_comando(dg::digraph<string>& root, string filename) {
   cout << "======================================================\n";
   cout << "1. Exibir grafo completo\n"
@@ -126,10 +128,10 @@ void shortest_path(dg::digraph<string> &root, const string &filename)
     string destino;
 
     cout << "Digite o IP de Origem: ";
-    getline(cin, origem);
+    cin >> origem;
 
     cout << "Digite o IP de Destino: ";
-    getline(cin, destino);
+    cin >> destino;
 
     auto path = root.shortest_path(origem, destino);
 
@@ -139,6 +141,16 @@ void shortest_path(dg::digraph<string> &root, const string &filename)
 
         return;
     }
+
+    cout << "Caminho encontrado (" << path.size() - 1 << " saltos):" << endl;
+    for (int i = 0; i < path.size(); i++) {
+      string final = " -> ";
+      if (i == path.size() - 1) {
+        final = "\n";
+      }
+      cout << path[i]->value << final;
+    }
+    return;
 
     // Terminar!!
 
