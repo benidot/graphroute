@@ -38,7 +38,7 @@ class digraph {
 
  public:
   void insert_node(const T& val) {
-    if (val == "*") return;
+    if (val == "*" || val == "") return;
     if (graph.count(val) != 0) return;
     node aux;
     aux.value = val;
@@ -49,7 +49,7 @@ class digraph {
     auto pfrom = find(from);
     if (!pfrom) return;
     auto pto = find(to);
-    if (!pto || pto->value == "*") return;
+    if (!pto || pto->value == "*" || pto->value == "") return;
 
     pfrom->links.insert(pto);
   }
