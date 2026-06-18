@@ -84,13 +84,14 @@ void fullprint(const graph& A) {
   }  // so pra printar por agora
 }
 
-void print_dados(graph &A) {
+void print_dados(graph& A) {
   int vertices_unicos = 0;
   int arestas = 0;
-  cout << "Vertices unicos (IPs): " << vertices_unicos << " | Arestas: " << arestas << endl;
+  cout << "Vertices unicos (IPs): " << vertices_unicos
+       << " | Arestas: " << arestas << endl;
 }
 
-void sel_comando(dg::digraph<string> &root) {
+void sel_comando(dg::digraph<string>& root, string filename) {
   cout << "======================================================\n";
   cout << "1. Exibir grafo completo\n"
        << "2. Encontrar menor caminho\n"
@@ -101,27 +102,53 @@ void sel_comando(dg::digraph<string> &root) {
   cout << "Escolha uma opcao: ";
   int op = 0;
   cin >> op;
-  if(op != 0 && op >= 5) {
+  if (op != 0 && op >= 5) {
     return;
-  } 
+  }
   string ch_s;
   switch (op) {
     case 1:
       ch_s = sel_saida();
       root.show(ch_s);
     case 2:
-      return; // encontrar menor caminho
+      shortest_path(root, filename);
     case 3:
-      return; // calcular diametro
+      return;  // calcular diametro
     case 4:
-      return; // identificar roteadores
+      
+      return;  // identificar roteadores
   }
+}
+
+void shortest_path(dg::digraph<string> &root, const string &filename)
+{
+    string origem;
+    string destino;
+
+    cout << "Digite o IP de Origem: ";
+    getline(cin, origem);
+
+    cout << "Digite o IP de Destino: ";
+    getline(cin, destino);
+
+    auto path = root.shortest_path(origem, destino);
+
+    if (path.empty()) {
+
+        cout << "Nenhum caminho encontrado.\n";
+
+        return;
+    }
+
+    // Terminar!!
+
 }
 
 int main(int argc, char* argv[]) {
   ifstream inp;
   graph A;
   dg::digraph<string> root;
+  string filename = argv[1];
   inp.open(argv[1]);
 
   if (!inp) {
@@ -132,8 +159,8 @@ int main(int argc, char* argv[]) {
   csv(inp, A.headers, A.rows);
   make_graph(inp, A.headers, A.rows, root);
   print_dados(A);
-  sel_comando(root);
-  
+  sel_comando(root, filename);
+
   // fullprint();
 
   inp.close();
