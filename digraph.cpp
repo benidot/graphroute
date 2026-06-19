@@ -63,10 +63,15 @@ class digraph {
     graph.erase(val);
   }
 
-  void show(std::string& choice) {
+  // basicamente faz um default com o = bem daora
+  void show(std::string& choice, const std::unordered_set<T>& highlight = {}) {
     std::ofstream dot("g123456.dot");
     dot << "digraph{\n";
     for (const auto& [key, node] : graph) {
+      bool highlighted = highlight.count(key) > 0;
+      if (highlighted) {
+        dot << "\t\"" << key << "\" [style=filled, fillcolor=lightblue];\n";
+      }
       dot << "\t\"" << key << "\" -> {";
       for (const auto& link : node.links) {
         dot << "\"" << link->value << "\" ";
@@ -135,6 +140,32 @@ class digraph {
     std::reverse(path.begin(), path.end());
 
     return path;
+  }
+
+  // sintaxe nova mas e basicamente so dizer "dai cara so vou ler coisa n me da tiro"
+  std::unordered_map<T, int> in_g() const {
+    std::unordered_map<T, int> graus;
+    for (const auto& [key, node] : graph) {
+      graus[key] = 0;
+    }
+    for (const auto& [key, node] : graph) {
+      for (const auto& link : node.links) {
+        graus[link->value]++;
+      }
+    }
+    return graus;
+  }
+
+  std::vector<T> roteadores() {
+    auto graus = in_g();
+    std::vector<std::pair<T, int>> sorted(graus.begin(), graus.end());
+    std::sort(sorted.begin(), sorted.end(),
+              [](const auto& a, const auto& b) { return a.second > b.second; });
+    std::vector<T> top;
+    for (int i = 0; i < std::min(5, (int)sorted.size()); i++) {
+      top.push_back(sorted[i].first);
+    }
+    return top;
   }
 
   void load(const std::string& filename) {

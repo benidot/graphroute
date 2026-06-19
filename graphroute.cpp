@@ -91,39 +91,6 @@ void print_dados(graph& A) {
        << " | Arestas: " << arestas << endl;
 }
 
-void shortest_path(dg::digraph<string> &root, const string &filename);
-
-void sel_comando(dg::digraph<string>& root, string filename) {
-  cout << "======================================================\n";
-  cout << "1. Exibir grafo completo\n"
-       << "2. Encontrar menor caminho\n"
-       << "3. Calcular o diametro do grafo\n"
-       << "4. Identificar roteadores criticos\n"
-       << "0. Sair\n";
-  cout << "======================================================\n";
-  cout << "Escolha uma opcao: ";
-  int op = 0;
-  cin >> op;
-  if (op != 0 && op >= 5) {
-    return;
-  }
-  string ch_s;
-  switch (op) {
-    case 1:
-      ch_s = sel_saida();
-      root.show(ch_s);
-      break;
-    case 2:
-      shortest_path(root, filename);
-      break;
-    case 3:
-      return;  // calcular diametro
-    case 4:
-      
-      return;  // identificar roteadores
-  }
-}
-
 void shortest_path(dg::digraph<string> &root, const string &filename)
 {
     string origem;
@@ -152,10 +119,54 @@ void shortest_path(dg::digraph<string> &root, const string &filename)
       }
       cout << path[i]->value << final;
     }
-    return;
+    std::unordered_set<std::string> path_nodes;
+    for (const auto& node : path) {
+        path_nodes.insert(node->value);
+    }
+    
+    string ch_s = sel_saida();
+    root.show(ch_s, path_nodes);
 
     // Terminar!!
 
+}
+
+void sel_comando(dg::digraph<string>& root, string filename) {
+  cout << "======================================================\n";
+  cout << "1. Exibir grafo completo\n"
+       << "2. Encontrar menor caminho\n"
+       << "3. Calcular o diametro do grafo\n"
+       << "4. Identificar roteadores criticos\n"
+       << "0. Sair\n";
+  cout << "======================================================\n";
+  cout << "Escolha uma opcao: ";
+  int op = 0;
+  cin >> op;
+  if (op != 0 && op >= 5) {
+    return;
+  }
+  string ch_s;
+  switch (op) {
+    case 1:
+      ch_s = sel_saida();
+      root.show(ch_s);
+      break;
+    case 2:
+      shortest_path(root, filename);
+      break;
+    case 3:
+      return;  // calcular diametro
+    case 4:
+      auto top = root.roteadores();
+      cout << "top 5 roteadores\n";
+      for (const auto& roteador : top) {
+        cout << roteador << "\n";
+      }
+      string ch_s = sel_saida();
+      std::unordered_set<std::string> top_nodes(top.begin(), top.end());
+      root.show(ch_s, top_nodes);
+      return;  // identificar roteadores
+  }
 }
 
 int main(int argc, char* argv[]) {
