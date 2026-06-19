@@ -127,8 +127,13 @@ void shortest_path(dg::digraph<string> &root, const string &filename)
     string ch_s = sel_saida();
     root.show(ch_s, path_nodes);
 
-    // Terminar!!
+}
 
+void show_diameter(dg::digraph<string>& root)
+{
+    cout << "\nDiâmetro do grafo: "
+         << root.diametro()
+         << "\n";
 }
 
 void sel_comando(dg::digraph<string>& root, string filename) {
@@ -155,7 +160,8 @@ void sel_comando(dg::digraph<string>& root, string filename) {
       shortest_path(root, filename);
       break;
     case 3:
-      return;  // calcular diametro
+      show_diameter(root);
+      return;
     case 4:
       auto top = root.roteadores();
       cout << "top 5 roteadores\n";

@@ -200,5 +200,40 @@ class digraph {
     }
     out.close();
   }
+
+  int diametro()
+  {
+      int diam = 0;
+
+      for (auto& [key, start_node] : graph) {
+
+          std::queue<node*> q;
+          std::unordered_map<node*, int> dist;
+
+          q.push(&start_node);
+          dist[&start_node] = 0;
+
+          while (!q.empty()) {
+
+              auto current = q.front();
+              q.pop();
+
+              if (dist[current] > diam) {
+                  diam = dist[current];
+              }
+
+              for (auto adj : current->links) {
+
+                  if (dist.count(adj) == 0) {
+
+                      dist[adj] = dist[current] + 1;
+                      q.push(adj);
+                  }
+              }
+          }
+      }
+
+      return diam;
+  }
 };
 }  // namespace dg
