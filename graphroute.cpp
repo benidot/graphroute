@@ -112,8 +112,10 @@ void sel_comando(dg::digraph<string>& root, string filename) {
     case 1:
       ch_s = sel_saida();
       root.show(ch_s);
+      break;
     case 2:
       shortest_path(root, filename);
+      break;
     case 3:
       return;  // calcular diametro
     case 4:
