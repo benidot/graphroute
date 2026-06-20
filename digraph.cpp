@@ -168,6 +168,18 @@ class digraph {
     return top;
   }
 
+  int contar_nodes() {
+    return graph.size();
+  }
+
+  int contar_arestas() {
+    int edges = 0;
+    for (const auto& [key, node] : graph) {
+      edges += node.links.size();
+    }
+    return edges;
+  }
+
   void load(const std::string& filename) {
     std::ifstream in(filename);
     if (!in) return;

@@ -85,9 +85,9 @@ void fullprint(const graph& A) {
   }  // so pra printar por agora
 }
 
-void print_dados(graph& A) {
-  int vertices_unicos = 0;
-  int arestas = 0;
+void print_dados(dg::digraph<std::string>& root) {
+  int vertices_unicos = root.contar_nodes();
+  int arestas = root.contar_arestas();
   cout << "Vertices unicos (IPs): " << vertices_unicos
        << " | Arestas: " << arestas << endl;
 }
@@ -130,7 +130,7 @@ void shortest_path(dg::digraph<string>& root, const string& filename) {
 
 void show_diameter(dg::digraph<string>& root)
 {
-    cout << "\nDiâmetro do grafo: "
+    cout << "Diametro do grafo: "
          << root.diametro()
          << "\n";
 }
@@ -188,7 +188,7 @@ int main(int argc, char* argv[]) {
   cout << "Arquivo valido. Continuando.\n";
   csv(inp, A.headers, A.rows);
   make_graph(inp, A.headers, A.rows, root);
-  print_dados(A);
+  print_dados(root);
   sel_comando(root, filename);
 
   // fullprint();
