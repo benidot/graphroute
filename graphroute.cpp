@@ -2,8 +2,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
+
 #include "digraph.cpp"
 
 using namespace std;
@@ -91,44 +92,41 @@ void print_dados(graph& A) {
        << " | Arestas: " << arestas << endl;
 }
 
-void shortest_path(dg::digraph<string> &root, const string &filename)
-{
-    string origem;
-    string destino;
+void shortest_path(dg::digraph<string>& root, const string& filename) {
+  string origem;
+  string destino;
 
-    cout << "Digite o IP de Origem: ";
-    cin >> origem;
+  cout << "Digite o IP de Origem: ";
+  cin >> origem;
 
-    cout << "Digite o IP de Destino: ";
-    cin >> destino;
+  cout << "Digite o IP de Destino: ";
+  cin >> destino;
 
-    auto path = root.shortest_path(origem, destino);
+  auto path = root.shortest_path(origem, destino);
 
-    if (path.empty()) {
+  if (path.empty()) {
+    cout << "Nenhum caminho encontrado.\n";
 
-        cout << "Nenhum caminho encontrado.\n";
+    return;
+  }
 
-        return;
+  cout << "Caminho encontrado (" << path.size() - 1 << " saltos):" << endl;
+  for (int i = 0; i < path.size(); i++) {
+    string final = " -> ";
+    if (i == path.size() - 1) {
+      final = "\n";
     }
+    cout << path[i]->value << final;
+  }
+  std::unordered_set<std::string> path_nodes;
+  for (const auto& node : path) {
+    path_nodes.insert(node->value);
+  }
 
-    cout << "Caminho encontrado (" << path.size() - 1 << " saltos):" << endl;
-    for (int i = 0; i < path.size(); i++) {
-      string final = " -> ";
-      if (i == path.size() - 1) {
-        final = "\n";
-      }
-      cout << path[i]->value << final;
-    }
-    std::unordered_set<std::string> path_nodes;
-    for (const auto& node : path) {
-        path_nodes.insert(node->value);
-    }
-    
-    string ch_s = sel_saida();
-    root.show(ch_s, path_nodes);
+  string ch_s = sel_saida();
+  root.show(ch_s, path_nodes);
 
-    // Terminar!!
-
+  // Terminar!!
 }
 
 void sel_comando(dg::digraph<string>& root, string filename) {
